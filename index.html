@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<!-- Document type declaration: HTML5 -->
+<html lang="en">
+
+<head>
+  <!-- Character encoding set to UTF-8 for multi-language support -->
+  <meta charset="utf-8">
+  <!-- Viewport meta tag: ensures proper scaling on mobile devices -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Page title -->
+  <title>
+    DT-TacVLA | A Dual-Timescale Tactile-Enhanced Vision-Language-Action Model for Contact-Rich Manipulation
+  </title>
+
+  <!-- Load Google Fonts: Google Sans, Noto Sans, Castoro -->
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <!-- Load Bulma CSS framework (v0.9.4) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <!-- Load Font Awesome icon library (v6.5.0) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- ==================== Custom Styles ==================== -->
+  <style>
+    /* Global font settings */
+    body {
+      font-family: "Google Sans", "Noto Sans", sans-serif;
+    }
+
+    /* Publication title style: bold, line-height 1.2 */
+    .publication-title {
+      font-family: "Google Sans", sans-serif;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    /* Hero banner background: light blue gradient */
+    .hero-banner {
+      background: linear-gradient(135deg, #f8fbff 0%, #eef4ff 100%);
+    }
+
+    /* Author section link styles */
+    .publication-authors a {
+      color: #3273dc;
+      text-decoration: none;
+    }
+
+    /* Author link hover effect: show underline */
+    .publication-authors a:hover {
+      text-decoration: underline;
+    }
+
+    /* Navbar: center menu across full page width instead of remaining space after brand */
+    .project-navbar {
+      position: relative;
+    }
+
+    .project-navbar .navbar-brand {
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 2;
+    }
+
+    .project-navbar .navbar-menu {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      box-shadow: none;
+    }
+
+    .project-navbar .navbar-start {
+      flex-grow: 0;
+      justify-content: center;
+      margin: 0;
+    }
+
+    @media screen and (max-width: 768px) {
+      .project-navbar .navbar-brand {
+        position: static;
+        justify-content: center;
+      }
+
+      .project-navbar .navbar-menu {
+        flex-wrap: wrap;
+      }
+
+      .project-navbar .navbar-start {
+        display: flex;
+        flex-wrap: wrap;
+      }
+    }
+
+    /* Publication link button spacing */
+    .publication-links .button {
+      margin: 0.25rem 0.3rem;
+    }
+
+    /* Highlight tag style (e.g., conference badge) */
+    .highlight-tag {
+      font-size: 1.5rem;
+      color: #fff;
+      background-color: red;
+      font-weight: 700;
+      padding: 0.5em 0.9em;
+      border-radius: 8px;
+    }
+
+    /* Section image style: rounded corners + shadow */
+    .section-image {
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      margin: 1rem auto;
+      display: block;
+      max-width: 100%;
+    }
+
+    /* Highlight box style: blue left border */
+    .highlight-box {
+      background: #f9fafc;
+      border-left: 4px solid #3273dc;
+      padding: 1rem 1.25rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+
+    /* Metric card style: for displaying key data results */
+    .metric-card {
+      border: 1px solid #e8e8e8;
+      border-radius: 12px;
+      padding: 1.2rem;
+      height: 100%;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+      background: #fff;
+    }
+
+    /* Metric number style: large blue bold font */
+    .metric-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #3273dc;
+    }
+
+    /* Small caption text style */
+    .small-caption {
+      font-size: 0.95rem;
+      color: #666;
+    }
+
+    /* Teaser caption text style */
+    .teaser-caption {
+      font-size: 1rem;
+      color: #444;
+      margin-top: 0.75rem;
+    }
+
+    /* Code block style (for BibTeX citations) */
+    pre {
+      border-radius: 10px;
+      padding: 1rem;
+      overflow-x: auto;
+    }
+
+    /* Footer style */
+    .footer {
+      padding: 2rem 1.5rem 2rem;
+    }
+
+    /* Paper tag style */
+    .tag.is-paper {
+      background-color: #eef3ff;
+      color: #2959c7;
+    }
+
+    /* Table style refinements */
+    .table-container table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .table-container th, .table-container td {
+      padding: 0.5rem 0.75rem;
+      text-align: center !important;
+      vertical-align: middle !important;
+    }
+    .table-container thead th {
+      border-bottom: 2px solid #dbdbdb;
+      font-weight: 700;
+    }
+    .table-container tbody tr:last-child {
+      border-bottom: 2px solid #dbdbdb;
+    }
+    .table-container tbody tr:hover {
+      background-color: #f5f5f5;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ==================== Navbar ==================== -->
+  <nav class="navbar project-navbar" role="navigation" aria-label="main navigation">
+    <!-- Navbar brand -->
+    <div class="navbar-brand">
+      <a class="navbar-item" href="#">
+        <strong>DT-TacVLA</strong>
+      </a>
+    </div>
+
+    <!-- Navbar menu: anchor links to each page section -->
+    <div class="navbar-menu is-active">
+      <div class="navbar-start">
+        <a class="navbar-item" href="#abstract">Abstract</a>
+        <a class="navbar-item" href="#method">Method</a>
+        <a class="navbar-item" href="#tasks">Tasks</a>
+        <a class="navbar-item" href="#demo">Demo</a>
+        <a class="navbar-item" href="#results">Results</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==================== Hero Banner ==================== -->
+  <section class="hero hero-banner">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+
+            <!-- Paper main title -->
+            <h1 class="title is-1 publication-title">
+              DT-TacVLA: A Dual-Timescale Tactile-Enhanced
+              Vision&ndash;Language&ndash;Action Model for Contact-Rich Manipulation
+            </h1>
+
+            <!-- Author information (anonymous submission) -->
+            <div class="is-size-5 publication-authors" style="margin-top: 1rem;">
+              <span class="author-block">Anonymous Authors</span>
+            </div>
+
+            <!-- Publication resource links -->
+            <div class="column has-text-centered" style="margin-top: 1rem;">
+              <div class="publication-links">
+                <!-- Paper PDF link (not yet available) -->
+                <!-- <a href="#" target="_blank" class="button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                  <span>Paper</span>
+                </a> -->
+
+                <!-- Code link (not yet available) -->
+                <!-- <a href="#" target="_blank" class="button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                </a> -->
+              </div>
+            </div>
+
+            <!-- Core concept tagline -->
+            <div class="is-size-4" style="margin-top: 1rem;">
+              Dual-timescale tactile fusion: <strong>slow semantic context + fast reflex modulation</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== Teaser / Overview ==================== -->
+  <section class="section">
+    <div class="container is-max-desktop has-text-centered">
+      <h2 class="title is-3">Overview</h2>
+      <!-- Teaser figure: dual-timescale tactile fusion illustration -->
+      <img src="assets/images/teaser_01.png" alt="DT-TacVLA dual-timescale tactile fusion illustration" class="section-image" style="max-width: 75%;">
+      <!-- Teaser caption -->
+      <p class="teaser-caption has-text-justified">
+        <strong>DT-TacVLA</strong> is a dual-timescale tactile fusion framework built on SmolVLA that processes tactile inputs along two complementary pathways. The <em>slow semantic pathway</em> operates at a lower update rate and adaptively fuses tactile image sequences with VLM features through a semantic-guided gating mechanism, producing a reusable task&ndash;contact context. The <em>fast reflex pathway</em> is triggered multiple times during the execution of a single action chunk: it encodes the current tactile marker displacements into compact tokens and injects them into the action expert through a Tactile-Marker Adapter, providing real-time contact feedback modulation.
+      </p>
+    </div>
+  </section>
+
+  <!-- ==================== Highlights ==================== -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="has-text-centered">
+        <h2 class="title is-3">Highlights</h2>
+      </div>
+
+      <!-- Highlights list: wrapped in blue-left-border highlight box -->
+      <div class="highlight-box">
+        <ul>
+          <!-- Highlight 1: dual-timescale framework -->
+          <li>We propose <strong>DT-TacVLA</strong>, a dual-timescale tactile-enhanced VLA framework that places tactile image sequences and marker displacements on slow and fast timescales, respectively, inducing a hierarchical coupling between slow-context constraint and fast-feedback modulation.</li>
+          <!-- Highlight 2: semantic-guided gating mechanism -->
+          <li>We design a <strong>Semantic-Guided Tactile Gating</strong> mechanism in the slow semantic pathway that adaptively fuses tactile image-sequence features based on VLM semantic summaries and proprioceptive state, producing a semantically conditioned slow context reusable across multiple fast reflex updates.</li>
+          <!-- Highlight 3: marker-based reflex modulation -->
+          <li>We propose a <strong>Marker-Based Reflex Modulation</strong> method that encodes sparse tactile marker displacements into compact token representations and injects them into the action expert as additive residual attention, enabling real-time correction with only modest additional inference cost.</li>
+          <!-- Highlight 4: experimental validation -->
+          <li>DT-TacVLA consistently outperforms vision-only VLA baselines (Diffusion Policy, &pi;<sub>0.5</sub>, SmolVLA) and ablation variants on three contact-rich real-world manipulation tasks, achieving <strong>91.7%</strong> average success rate.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== Abstract ==================== -->
+  <section class="section hero is-light" id="abstract">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Vision&ndash;Language&ndash;Action (VLA) models exhibit strong semantic understanding and policy generalization, yet their predominantly vision-centric perception struggles to characterize key contact states such as contact establishment, in-hand slip, and normal/shear interactions, which limits their performance in contact-rich manipulation. In this paper, we propose <strong>DT-TacVLA</strong> (Dual-Timescale Tactile VLA), a dual-timescale tactile fusion framework built on top of SmolVLA that processes tactile inputs along two complementary slow and fast pathways.
+            </p>
+            <p>
+              The <em>slow semantic pathway</em> operates at a lower update rate and adaptively fuses tactile image sequences with VLM features through a semantic-guided gating mechanism, producing a task&ndash;contact context that can be reused across multiple fast reflex updates. The <em>fast reflex pathway</em> is triggered multiple times during the execution of a single action chunk: it encodes the current tactile marker displacements into compact tokens and injects them into the action expert through a Tactile-Marker Adapter under the fixed slow-context conditioning, thereby providing real-time contact feedback modulation of the action chunk.
+            </p>
+            <p>
+              On three contact-rich real-world manipulation tasks&mdash;power plug insertion, USB connector insertion, and test-tube placement&mdash;DT-TacVLA consistently outperforms vision-only VLA baselines and its ablation variants in success rate.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== Method ==================== -->
+  <section class="section" id="method">
+    <div class="container is-max-desktop">
+      <div class="has-text-centered">
+        <h2 class="title is-3">Method Overview</h2>
+      </div>
+
+      <!-- Method architecture figure: DT-TacVLA overall architecture -->
+      <img src="assets/images/method_01.png" alt="DT-TacVLA architecture overview" class="section-image">
+
+      <!-- Method description -->
+      <div class="content has-text-justified">
+        <!-- Core design philosophy -->
+        <p>
+          <strong>DT-TacVLA</strong> consists of three core modules:
+        </p>
+        <p>
+          <strong>(a) Slow semantic pathway:</strong> The VLM processes vision and language inputs at a low rate and outputs multi-layer hidden states. A tactile sequence encoder extracts temporal features from the recent tactile history. A semantic-guided gating mechanism fuses the semantic summary, the proprioceptive encoding, and the tactile sequence features to produce slow-context conditions, which are written into a reusable K/V cache.
+        </p>
+        <p>
+          <strong>(b) Fast reflex pathway:</strong> The action expert reuses the cached slow-context conditions. Meanwhile, a marker extractor obtains low-dimensional tactile markers from the tactile images, encodes them into tactile tokens, and injects them into the action tokens as an additive residual to generate continuous action chunks.
+        </p>
+        <p>
+          <strong>(c) Fast&ndash;slow coupling:</strong> The slow system updates the context cache at a low rate, while the fast system continuously updates the action chunk under this constraint based on the most recent tactile markers. This hierarchical coupling ensures stable task understanding with responsive contact correction.
+        </p>
+      </div>
+
+      <!-- Hierarchical modulation figure -->
+      <img src="assets/images/fusion_01.png" alt="Hierarchical modulation by slow and fast conditions" class="section-image" style="max-width: 75%;">
+      <p class="teaser-caption has-text-justified">
+        <strong>Hierarchical modulation of the action expert.</strong> The slow context acts as a stable upper-level condition that participates in updating the action tokens; the tactile marker tokens are then injected through the Tactile-Marker Adapter as an additive residual, providing high-rate closed-loop modulation of the action chunk.
+      </p>
+    </div>
+  </section>
+
+  <!-- ==================== Tasks ==================== -->
+  <section class="section" id="tasks">
+    <div class="container is-max-desktop">
+      <div class="has-text-centered">
+        <h2 class="title is-3">Contact-Rich Manipulation Tasks</h2>
+      </div>
+
+      <!-- Task illustration -->
+      <img src="assets/images/tasks_01.png" alt="Contact-rich manipulation task examples" class="section-image">
+
+      <!-- Task description -->
+      <div class="content has-text-justified">
+        <p>
+          To evaluate the effectiveness of DT-TacVLA in contact-rich manipulation, we conduct experiments on <strong>three real-robot tasks</strong>:
+        </p>
+        <ul>
+          <li><strong>Power Plug Insertion</strong>: Inserting a power plug into a socket with tight tolerance</li>
+          <li><strong>USB Connector Insertion</strong>: Inserting a USB connector requiring precise alignment</li>
+          <li><strong>Test Tube Placement</strong>: Placing a test tube into a rack with contact-sensitive release</li>
+        </ul>
+        <p>
+          Each task contains two phases&mdash;free-space motion and contact interaction&mdash;making it possible to test the policy's ability to switch between the vision-dominated non-contact phase and the touch-dominated contact phase and to fuse multimodal information.
+        </p>
+
+        <!-- Hardware platform description -->
+        <p>
+          <strong>Hardware platform:</strong> The experimental platform consists of a <strong>UR5 robotic arm</strong> and an <strong>Inspire EG2-4C2 gripper</strong>, with one <strong>Vitai GF255 vision-based tactile sensor</strong> mounted on each fingertip. Visual observations are provided by two RGB-D cameras: an Intel RealSense L515 for the global scene view and an Intel RealSense D435i mounted on the wrist for a close-range end-effector view.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== Demo Videos ==================== -->
+  <section class="section" id="demo">
+    <div class="container is-max-desktop">
+      <div class="has-text-centered">
+        <h2 class="title is-3">Demo Videos</h2>
+      </div>
+
+      <!-- Power Plug Insertion video row -->
+      <div class="content" style="margin-top: 2rem;">
+        <h3 class="title is-4 has-text-centered">Power Plug Insertion</h3>
+        <div class="columns is-multiline is-centered">
+          <div class="column is-3">
+            <div class="has-text-centered">
+              <a href="assets/videos/plug-001.mp4" target="_blank">
+                <video autoplay muted loop playsinline style="width: 100%; border-radius: 8px; cursor: pointer;">
+                  <source src="assets/videos/plug-001.mp4" type="video/mp4">
+                </video>
+              </a>
+              <p class="small-caption" style="margin-top: 0.5rem;"><span class="tag is-success is-light">Success Case 1</span></p>
+            </div>
+          </div>
+          <div class="column is-3">
+            <div class="has-text-centered">
+              <a href="assets/videos/plug-002.mp4" target="_blank">
+                <video autoplay muted loop playsinline style="width: 100%; border-radius: 8px; cursor: pointer;">
+                  <source src="assets/videos/plug-002.mp4" type="video/mp4">
+                </video>
+              </a>
+              <p class="small-caption" style="margin-top: 0.5rem;"><span class="tag is-success is-light">Success Case 2</span></p>
+            </div>
+          </div>
+          <div class="column is-3">
+            <div class="has-text-centered">
+              <a href="assets/videos/plug-003.mp4" target="_blank">
+                <video autoplay muted loop playsinline style="width: 100%; border-radius: 8px; cursor: pointer;">
+                  <source src="assets/videos/plug-003.mp4" type="video/mp4">
+                </video>
+              </a>
+              <p class="small-caption" style="margin-top: 0.5rem;"><span class="tag is-success is-light">Success Case 3</span></p>
+            </div>
+          </div>
+          <div class="column is-3">
+            <div class="has-text-centered">
+              <a href="assets/videos/plug-fail.mp4" target="_blank">
+                <video autoplay muted loop playsinline style="width: 100%; border-radius: 8px; cursor: pointer;">
+                  <source src="assets/videos/plug-fail.mp4" type="video/mp4">
+                </video>
+              </a>
+              <p class="small-caption" style="margin-top: 0.5rem;"><span class="tag is-danger is-light">Failure Case</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- USB Connector Insertion video row -->
+      <div class="content" style="margin-top: 2rem;">
+        <h3 class="title is-4 has-text-centered">USB Connector Insertion</h3>
+        <div class="columns is-multiline is-centered">
+          <div class="column is-3">
+            <div class="has-text-centered">
+              <a href="assets/videos/usb-001.mp4" target="_blank">
+                <video autoplay muted loop playsinline style="width: 100%; border-radius: 8px; cursor: pointer;">
+                  <source src="assets/videos/usb-001.mp4" type="video/mp4">
+                </video>
+              </a>
+              <p class="small-caption" style="margin-top: 0.5rem;"><span class="tag is-success is-light">Success Case 1</span></p>
+            </div>
+          </div>
+          <div class="column is-3">
+            <div class="has-text-centered">
+              <a href="assets/videos/usb-002.mp4" target="_blank">
+                <video autoplay muted loop playsinline style="width: 100%; border-radius: 8px; cursor: pointer;">
+                  <source src="assets/videos/usb-002.mp4" type="video/mp4">
+                </video>
+              </a>
+              <p class="small-caption" style="margin-top: 0.5rem;"><span class="tag is-success is-light">Success Case 2</span></p>
+            </div>
+          </div>
+          <div class="column is-3">
+            <div class="has-text-centered">
+              <a href="assets/videos/usb-fail001.mp4" target="_blank">
+                <video autoplay muted loop playsinline style="width: 100%; border-radius: 8px; cursor: pointer;">
+                  <source src="assets/videos/usb-fail001.mp4" type="video/mp4">
+                </video>
+              </a>
+              <div style="margin-top: 0.5rem; line-height: 1.2;">
+                <span class="tag is-danger is-light">Failure Case 1</span>
+                <p class="small-caption" style="font-size: 0.8rem; margin-top: 0.15rem;">Not inserted</p>
+              </div>
+            </div>
+          </div>
+          <div class="column is-3">
+            <div class="has-text-centered">
+              <a href="assets/videos/usb-fail002.mp4" target="_blank">
+                <video autoplay muted loop playsinline style="width: 100%; border-radius: 8px; cursor: pointer;">
+                  <source src="assets/videos/usb-fail002.mp4" type="video/mp4">
+                </video>
+              </a>
+              <div style="margin-top: 0.5rem; line-height: 1.2;">
+                <span class="tag is-danger is-light">Failure Case 2</span>
+                <p class="small-caption" style="font-size: 0.8rem; margin-top: 0.15rem;">Not fully inserted</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Test Tube Placement video row -->
+      <div class="content" style="margin-top: 2rem;">
+        <h3 class="title is-4 has-text-centered">Test Tube Placement</h3>
+        <div class="columns is-multiline is-centered">
+          <div class="column is-3">
+            <div class="has-text-centered">
+              <a href="assets/videos/tube-001.mp4" target="_blank">
+                <video autoplay muted loop playsinline style="width: 100%; border-radius: 8px; cursor: pointer;">
+                  <source src="assets/videos/tube-001.mp4" type="video/mp4">
+                </video>
+              </a>
+              <p class="small-caption" style="margin-top: 0.5rem;"><span class="tag is-success is-light">Success Case 1</span></p>
+            </div>
+          </div>
+          <div class="column is-3">
+            <div class="has-text-centered">
+              <a href="assets/videos/tube-002.mp4" target="_blank">
+                <video autoplay muted loop playsinline style="width: 100%; border-radius: 8px; cursor: pointer;">
+                  <source src="assets/videos/tube-002.mp4" type="video/mp4">
+                </video>
+              </a>
+              <p class="small-caption" style="margin-top: 0.5rem;"><span class="tag is-success is-light">Success Case 2</span></p>
+            </div>
+          </div>
+          <div class="column is-3">
+            <div class="has-text-centered">
+              <a href="assets/videos/tube-003.mp4" target="_blank">
+                <video autoplay muted loop playsinline style="width: 100%; border-radius: 8px; cursor: pointer;">
+                  <source src="assets/videos/tube-003.mp4" type="video/mp4">
+                </video>
+              </a>
+              <p class="small-caption" style="margin-top: 0.5rem;"><span class="tag is-success is-light">Success Case 3</span></p>
+            </div>
+          </div>
+          <div class="column is-3">
+            <div class="has-text-centered">
+              <a href="assets/videos/tube-fail.mp4" target="_blank">
+                <video autoplay muted loop playsinline style="width: 100%; border-radius: 8px; cursor: pointer;">
+                  <source src="assets/videos/tube-fail.mp4" type="video/mp4">
+                </video>
+              </a>
+              <p class="small-caption" style="margin-top: 0.5rem;"><span class="tag is-danger is-light">Failure Case</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== Continuous Test Videos ==================== -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container is-max-desktop">
+      <div class="has-text-centered">
+<h3 class="title is-4">Continuous Test: Each Task in One Take</h3>
+<p class="small-caption" style="margin-bottom: 1.5rem;">
+  Power Plug and Test Tube tasks include scene randomization initialization
+</p>
+      </div>
+      <div class="has-text-centered">
+        <p class="small-caption" style="margin-bottom: 1rem; font-style: italic;">
+          Note: The video is published on a newly created channel, set to unlisted, and does not contain any author information.
+        </p>
+        <div style="position: relative; width: 80%; max-width: 100%; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); margin: 0 auto;">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/t18Hlrq3rUo"
+            title="Continuous test video"
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+            frameborder="0"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== Key Results ==================== -->
+  <section class="section" id="results">
+    <div class="container is-max-desktop">
+      <div class="has-text-centered">
+        <h2 class="title is-3">Main Results</h2>
+      </div>
+
+      <!-- Two-column metric card layout -->
+      <div class="columns is-centered">
+        <!-- Metric 1: DT-TacVLA average success rate -->
+        <div class="column is-4">
+          <div class="metric-card has-text-centered">
+            <div class="metric-number">91.7%</div>
+            <p><strong>DT-TacVLA Avg. Success</strong></p>
+            <p class="small-caption">Average success rate across 3 tasks</p>
+          </div>
+        </div>
+
+        <!-- Metric 2: power plug insertion success rate -->
+        <div class="column is-4">
+          <div class="metric-card has-text-centered">
+            <div class="metric-number">100%</div>
+            <p><strong>Power Plug Insertion</strong></p>
+            <p class="small-caption">Perfect success rate</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main results comparison table -->
+      <div class="content" style="margin-top: 2rem;">
+        <h3 class="title is-4 has-text-centered">Success Rates Comparison</h3>
+        <div class="table-container">
+          <table class="table is-bordered is-striped is-hoverable is-fullwidth">
+            <thead>
+              <tr>
+                <th>Method</th>
+                <th>Power Plug</th>
+                <th>USB Connector</th>
+                <th>Test Tube</th>
+                <th>Average</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Diffusion Policy</td>
+                <td>35%</td>
+                <td>30%</td>
+                <td>45%</td>
+                <td>36.7%</td>
+              </tr>
+              <tr>
+                <td>&pi;<sub>0.5</sub></td>
+                <td>65%</td>
+                <td>55%</td>
+                <td>75%</td>
+                <td>65.0%</td>
+              </tr>
+              <tr>
+                <td>SmolVLA</td>
+                <td>50%</td>
+                <td>50%</td>
+                <td>65%</td>
+                <td>55.0%</td>
+              </tr>
+              <tr style="background-color: #eef3ff; font-weight: 700;">
+                <td>DT-TacVLA (Ours)</td>
+                <td>100%</td>
+                <td>80%</td>
+                <td>95%</td>
+                <td>91.7%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== Ablation Study ==================== -->
+  <section class="section hero is-light" id="ablation">
+    <div class="container is-max-desktop">
+      <div class="has-text-centered">
+        <h2 class="title is-3">Ablation Study</h2>
+      </div>
+
+      <!-- Ablation study description -->
+      <div class="content has-text-justified">
+        <p>
+          To verify the contribution of each component, we construct two ablation variants:
+        </p>
+        <ul>
+          <li><strong>w/o Gated Fusion</strong>: Removes the semantic-guided tactile gating and injects tactile observation directly into the VLM as early-fusion input.</li>
+          <li><strong>w/o Fast Reflex</strong>: Removes the fast reflex pathway and retains only the slow semantic pathway.</li>
+        </ul>
+      </div>
+
+      <!-- Ablation study table -->
+      <div class="content">
+        <div class="table-container">
+          <table class="table is-bordered is-striped is-hoverable is-fullwidth">
+            <thead>
+              <tr>
+                <th>Variant</th>
+                <th>Power Plug</th>
+                <th>USB Connector</th>
+                <th>Test Tube</th>
+                <th>Average</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>w/o Gated Fusion</td>
+                <td>70%</td>
+                <td>60%</td>
+                <td>75%</td>
+                <td>68.3%</td>
+              </tr>
+              <tr>
+                <td>w/o Fast Reflex</td>
+                <td>85%</td>
+                <td>55%</td>
+                <td>80%</td>
+                <td>73.3%</td>
+              </tr>
+              <tr style="background-color: #eef3ff; font-weight: 700;">
+                <td>DT-TacVLA (Full)</td>
+                <td>100%</td>
+                <td>80%</td>
+                <td>95%</td>
+                <td>91.7%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Ablation analysis -->
+      <div class="content has-text-justified">
+        <p>
+          <strong>w/o Gated Fusion</strong> achieves only 68.3% average success rate (23.4pp lower), indicating that directly injecting tactile observation lacks adaptive regulation with respect to the task phase and proprioceptive state, easily introducing redundant features during free-space motion.
+        </p>
+        <p>
+          <strong>w/o Fast Reflex</strong> achieves 73.3% (18.4pp lower), showing that although the slow semantic pathway provides an effective task&ndash;contact context, removing the fast reflex pathway leaves the policy unable to quickly respond to the latest shear-field variations and correct contact drift.
+        </p>
+      </div>
+
+      <!-- Fast-slow timescale analysis figure -->
+      <div class="has-text-centered" style="margin-top: 2rem;">
+        <h3 class="title is-4">Fast&ndash;Slow Timescale Analysis</h3>
+      </div>
+      <img src="assets/images/R_bar_01.png" alt="Success rates of different R values" class="section-image" style="max-width: 75%;">
+      <p class="teaser-caption has-text-justified">
+        <strong>Impact of fast reflex update rate R.</strong> The success rate increases as R grows and peaks at R=3. Power plug and USB connector insertion involve tight-tolerance strokes that require multiple fast reflexes to suppress accumulated contact drift, while test-tube placement is less sensitive to the reflex rate.
+      </p>
+    </div>
+  </section>
+
+  <!-- ==================== Conclusion ==================== -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="has-text-centered">
+        <h2 class="title is-3">Conclusion</h2>
+      </div>
+
+      <!-- Conclusion content -->
+      <div class="content has-text-justified">
+        <p>
+          This paper proposes <strong>DT-TacVLA</strong>, a dual-timescale tactile-enhanced Vision&ndash;Language&ndash;Action framework tailored to contact-rich manipulation. Compared with VLA methods that are primarily vision-driven or introduce tactile sensing at a single rate, DT-TacVLA models the task&ndash;contact context through the slow semantic pathway and applies instantaneous modulation to the action chunk via the fast reflex pathway using marker displacements, thereby capturing fine contact interactions more effectively.
+        </p>
+        <p>
+          Real-robot experiments show that DT-TacVLA outperforms vision-only VLA baselines and its ablation variants on power plug insertion, USB connector insertion, and test-tube placement, validating the effectiveness of dual-timescale tactile fusion for high-precision contact manipulation.
+        </p>
+        <p>
+          <strong>Future work</strong> will further introduce reinforcement learning to refine the contact policy through interactive trial-and-error on top of the dual-timescale tactile feedback, and to improve the model's robustness under complex contact perturbations, bimanual coordination, and deformable-object manipulation.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== Footer ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        <!-- Footer description text -->
+        <p>
+          This website is adapted from an academic project page template for research presentation.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>

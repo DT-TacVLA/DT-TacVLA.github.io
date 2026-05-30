@@ -239,16 +239,24 @@
             <div class="column has-text-centered" style="margin-top: 1rem;">
               <div class="publication-links">
                 <!-- Paper PDF link (not yet available) -->
-                <!-- <a href="#" target="_blank" class="button is-normal is-rounded is-dark">
-                  <span class="icon"><i class="fas fa-file-pdf"></i></span>
-                  <span>Paper</span>
-                </a> -->
+                <span class="link-block">
+                  <button class="external-link button is-normal is-rounded is-dark" type="button">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper</span>
+                  </button>
+                </span>
 
                 <!-- Code link (not yet available) -->
-                <!-- <a href="#" target="_blank" class="button is-normal is-rounded is-dark">
-                  <span class="icon"><i class="fab fa-github"></i></span>
-                  <span>Code</span>
-                </a> -->
+                <span class="link-block">
+                  <button class="external-link button is-normal is-rounded is-dark" type="button">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code (coming soon)</span>
+                  </button>
+                </span>
               </div>
             </div>
 
@@ -270,7 +278,7 @@
       <img src="assets/images/teaser_01.png" alt="DT-TacVLA dual-timescale tactile fusion illustration" class="section-image" style="max-width: 75%;">
       <!-- Teaser caption -->
       <p class="teaser-caption has-text-justified">
-        <strong>DT-TacVLA</strong> is a dual-timescale tactile fusion framework built on SmolVLA that processes tactile inputs along two complementary pathways. The <em>slow semantic pathway</em> operates at a lower update rate and adaptively fuses tactile image sequences with VLM features through a semantic-guided gating mechanism, producing a reusable task&ndash;contact context. The <em>fast reflex pathway</em> is triggered multiple times during the execution of a single action chunk: it encodes the current tactile marker displacements into compact tokens and injects them into the action expert through a Tactile-Marker Adapter, providing real-time contact feedback modulation.
+        <strong>DT-TacVLA</strong> is a dual-timescale tactile fusion framework built on top of SmolVLA. Tactile image sequences, together with vision-language-proprioceptive inputs, enter the slow pathway to form a reusable task&ndash;contact context; tactile marker displacements serve as high-rate feedback to the fast pathway and instantaneously modulate the action chunks produced by the action expert. The bottom timeline illustrates the update-rate relationship between the slow and fast pathways.
       </p>
     </div>
   </section>
@@ -286,13 +294,13 @@
       <div class="highlight-box">
         <ul>
           <!-- Highlight 1: dual-timescale framework -->
-          <li>We propose <strong>DT-TacVLA</strong>, a dual-timescale tactile-enhanced VLA framework that places tactile image sequences and marker displacements on slow and fast timescales, respectively, inducing a hierarchical coupling between slow-context constraint and fast-feedback modulation.</li>
+          <li>We propose <strong>DT-TacVLA</strong>, a dual-timescale tactile-enhanced VLA framework that separates tactile image sequences and marker displacements by their semantic and feedback roles, letting the action expert combine a low-rate VLM-guided context with high-rate marker feedback through hierarchical slow&ndash;fast coupling.</li>
           <!-- Highlight 2: semantic-guided gating mechanism -->
-          <li>We design a <strong>Semantic-Guided Tactile Gating</strong> mechanism in the slow semantic pathway that adaptively fuses tactile image-sequence features based on VLM semantic summaries and proprioceptive state, producing a semantically conditioned slow context reusable across multiple fast reflex updates.</li>
+          <li>We design a <strong>Semantic-Guided Tactile Gating</strong> mechanism that conditions tactile image-sequence fusion on layer-wise VLM semantic summaries and proprioceptive state, producing a reusable slow context for subsequent fast reflex updates.</li>
           <!-- Highlight 3: marker-based reflex modulation -->
-          <li>We propose a <strong>Marker-Based Reflex Modulation</strong> method that encodes sparse tactile marker displacements into compact token representations and injects them into the action expert as additive residual attention, enabling real-time correction with only modest additional inference cost.</li>
+          <li>We introduce <strong>Marker-Based Reflex Modulation</strong>, which encodes sparse tactile marker displacements into compact tactile tokens and injects them through a lightweight adapter, enabling real-time action-chunk correction with low inference overhead.</li>
           <!-- Highlight 4: experimental validation -->
-          <li>DT-TacVLA consistently outperforms vision-only VLA baselines (Diffusion Policy, &pi;<sub>0.5</sub>, SmolVLA) and ablation variants on three contact-rich real-world manipulation tasks, achieving <strong>91.7%</strong> average success rate.</li>
+          <li>DT-TacVLA consistently outperforms vision-only VLA baselines (Diffusion Policy, &pi;<sub>0.5</sub>, SmolVLA) on three contact-rich real-world manipulation tasks, achieving <strong>91.7%</strong> average success rate.</li>
         </ul>
       </div>
     </div>
@@ -306,13 +314,13 @@
           <h2 class="title is-3">Abstract</h2>
           <div class="content has-text-justified">
             <p>
-              Vision&ndash;Language&ndash;Action (VLA) models exhibit strong semantic understanding and policy generalization, yet their predominantly vision-centric perception struggles to characterize key contact states such as contact establishment, in-hand slip, and normal/shear interactions, which limits their performance in contact-rich manipulation. In this paper, we propose <strong>DT-TacVLA</strong> (Dual-Timescale Tactile VLA), a dual-timescale tactile fusion framework built on top of SmolVLA that processes tactile inputs along two complementary slow and fast pathways.
+              Vision&ndash;Language&ndash;Action (VLA) models exhibit strong semantic understanding and policy generalization, yet their predominantly vision-centric perception struggles to characterize key contact states such as contact establishment, in-hand slip, and normal and shear contact interactions, which limits their performance in contact-rich manipulation. In this paper, we propose <strong>DT-TacVLA</strong> (Dual-Timescale Tactile-Enhanced VLA), a dual-timescale tactile fusion framework built on top of SmolVLA that processes tactile inputs along two complementary slow and fast pathways.
             </p>
             <p>
-              The <em>slow semantic pathway</em> operates at a lower update rate and adaptively fuses tactile image sequences with VLM features through a semantic-guided gating mechanism, producing a task&ndash;contact context that can be reused across multiple fast reflex updates. The <em>fast reflex pathway</em> is triggered multiple times during the execution of a single action chunk: it encodes the current tactile marker displacements into compact tokens and injects them into the action expert through a Tactile-Marker Adapter under the fixed slow-context conditioning, thereby providing real-time contact feedback modulation of the action chunk.
+              The <em>slow semantic pathway</em> operates at a lower update rate and adaptively fuses tactile image sequences with VLM features through a semantic-guided gating mechanism, producing a task&ndash;contact context that can be reused across multiple fast reflex updates. The <em>fast reflex pathway</em> is triggered multiple times during the execution of a single action chunk. Under the fixed slow-context conditioning, it encodes the current tactile marker displacements into compact tokens and injects them into the action expert through a Tactile-Marker Adapter, thereby providing real-time contact feedback modulation of the action chunk.
             </p>
             <p>
-              On three contact-rich real-world manipulation tasks&mdash;power plug insertion, USB connector insertion, and test-tube placement&mdash;DT-TacVLA consistently outperforms vision-only VLA baselines and its ablation variants in success rate.
+              We evaluate DT-TacVLA on three contact-rich real-world manipulation tasks: power plug insertion, USB connector insertion, and test tube placement. The results show that DT-TacVLA consistently outperforms vision-only VLA baselines in success rate.
             </p>
           </div>
         </div>
@@ -334,23 +342,23 @@
       <div class="content has-text-justified">
         <!-- Core design philosophy -->
         <p>
-          <strong>DT-TacVLA</strong> consists of three core modules:
+          Given expert demonstration trajectories, <strong>DT-TacVLA</strong> learns a Vision-Tactile-Language-Action (VTLA) policy that maps visual observation, language instruction, robot proprioceptive state, a recent tactile image sequence, and current tactile marker displacements to a continuous action chunk.
         </p>
         <p>
-          <strong>(a) Slow semantic pathway:</strong> The VLM processes vision and language inputs at a low rate and outputs multi-layer hidden states. A tactile sequence encoder extracts temporal features from the recent tactile history. A semantic-guided gating mechanism fuses the semantic summary, the proprioceptive encoding, and the tactile sequence features to produce slow-context conditions, which are written into a reusable K/V cache.
+          <strong>(a) Slow semantic pathway:</strong> The VLM processes vision and language inputs at a low rate and outputs multi-layer hidden states aligned with the action expert. TacVideoMAE extracts temporal features from the recent tactile image history, and the semantic-guided gating mechanism fuses the layer-wise semantic summary, proprioceptive encoding, and tactile sequence features to produce slow-context conditions. These conditions are written into a reusable K/V cache and remain fixed across several subsequent fast reflex updates.
         </p>
         <p>
-          <strong>(b) Fast reflex pathway:</strong> The action expert reuses the cached slow-context conditions. Meanwhile, a marker extractor obtains low-dimensional tactile markers from the tactile images, encodes them into tactile tokens, and injects them into the action tokens as an additive residual to generate continuous action chunks.
+          <strong>(b) Fast reflex pathway:</strong> The action expert reuses the cached slow-context conditions. Meanwhile, the marker extractor tracks the tactile marker array in the most recent frame, encodes the marker displacements into compact tactile tokens, and injects them into the action tokens as an additive residual through the Tactile-Marker Adapter.
         </p>
         <p>
-          <strong>(c) Fast&ndash;slow coupling:</strong> The slow system updates the context cache at a low rate, while the fast system continuously updates the action chunk under this constraint based on the most recent tactile markers. This hierarchical coupling ensures stable task understanding with responsive contact correction.
+          <strong>(c) Fast&ndash;slow coupling:</strong> The slow pathway determines the task&ndash;contact semantics that the action expert should attend to, while the fast pathway applies instantaneous tactile corrections within this context. During inference, the slow K/V cache remains unchanged inside a slow window; only the tactile marker tokens are updated with the current tactile frame.
         </p>
       </div>
 
       <!-- Hierarchical modulation figure -->
       <img src="assets/images/fusion_01.png" alt="Hierarchical modulation by slow and fast conditions" class="section-image" style="max-width: 75%;">
       <p class="teaser-caption has-text-justified">
-        <strong>Hierarchical modulation of the action expert.</strong> The slow context acts as a stable upper-level condition that participates in updating the action tokens; the tactile marker tokens are then injected through the Tactile-Marker Adapter as an additive residual, providing high-rate closed-loop modulation of the action chunk.
+        <strong>Hierarchical modulation of the action expert.</strong> The layer-wise slow context is projected and cached as K/V, serving as a stable upper-level condition for action-token updates. After attention over this slow context, tactile marker tokens are injected through the Tactile-Marker Adapter as an additive residual, providing high-rate closed-loop modulation of the action chunk.
       </p>
     </div>
   </section>
@@ -362,19 +370,17 @@
         <h2 class="title is-3">Contact-Rich Manipulation Tasks</h2>
       </div>
 
+      <div class="content has-text-justified" style="margin-top: 2rem; margin-bottom: 0.25rem;">
+        <p style="margin-bottom: 0;">
+          To evaluate the effectiveness of DT-TacVLA in contact-rich manipulation, we conduct experiments on <strong>three real-robot tasks</strong>:
+        </p>
+      </div>
+
       <!-- Task illustration -->
-      <img src="assets/images/tasks_01.png" alt="Contact-rich manipulation task examples" class="section-image">
+      <img src="assets/images/tasks_01.png" alt="Contact-rich manipulation task examples" class="section-image" style="margin-top: 0.5rem;">
 
       <!-- Task description -->
       <div class="content has-text-justified">
-        <p>
-          To evaluate the effectiveness of DT-TacVLA in contact-rich manipulation, we conduct experiments on <strong>three real-robot tasks</strong>:
-        </p>
-        <ul>
-          <li><strong>Power Plug Insertion</strong>: Inserting a power plug into a socket with tight tolerance</li>
-          <li><strong>USB Connector Insertion</strong>: Inserting a USB connector requiring precise alignment</li>
-          <li><strong>Test Tube Placement</strong>: Placing a test tube into a rack with contact-sensitive release</li>
-        </ul>
         <p>
           Each task contains two phases&mdash;free-space motion and contact interaction&mdash;making it possible to test the policy's ability to switch between the vision-dominated non-contact phase and the touch-dominated contact phase and to fuse multimodal information.
         </p>
@@ -382,6 +388,12 @@
         <!-- Hardware platform description -->
         <p>
           <strong>Hardware platform:</strong> The experimental platform consists of a <strong>UR5 robotic arm</strong> and an <strong>Inspire EG2-4C2 gripper</strong>, with one <strong>Vitai GF255 vision-based tactile sensor</strong> mounted on each fingertip. Visual observations are provided by two RGB-D cameras: an Intel RealSense L515 for the global scene view and an Intel RealSense D435i mounted on the wrist for a close-range end-effector view.
+        </p>
+        <p>
+          <strong>Experimental protocol:</strong> We collect <strong>100 expert demonstration trajectories</strong> for each task using a Vive-Tracker-based teleoperation system. Each method is evaluated with <strong>20 real-robot trials per task</strong>; before each trial, the object and gripper states are reset and the scene is randomized. A trial is successful only when the insertion or placement is completed and the target remains stable without obvious tipping or jamming.
+        </p>
+        <p>
+          <strong>Implementation details:</strong> Global and wrist RGB-D images are captured at <strong>640&times;480</strong>, while the tactile sensor outputs <strong>256&times;256</strong> tactile images and an <strong>11&times;11</strong> marker displacement array. The policy uses one tactile sensor stream, the most recent <strong>K=4</strong> tactile frames, <strong>N<sub>raw</sub>=398</strong> TacVideoMAE tokens pooled into <strong>N<sub>t</sub>=96</strong> tactile tokens, action chunks of length <strong>H=50</strong>, and <strong>R=3</strong> fast reflex updates by default. All methods are trained or fine-tuned for <strong>40,000</strong> optimization steps with batch size <strong>64</strong> on a workstation with two NVIDIA RTX 5090D GPUs.
         </p>
       </div>
     </div>
@@ -602,6 +614,9 @@
       <!-- Main results comparison table -->
       <div class="content" style="margin-top: 2rem;">
         <h3 class="title is-4 has-text-centered">Success Rates Comparison</h3>
+        <p class="has-text-centered small-caption">
+          Success rates are measured with 20 real-robot trials per task per model, following the evaluation protocol in the paper.
+        </p>
         <div class="table-container">
           <table class="table is-bordered is-striped is-hoverable is-fullwidth">
             <thead>
@@ -645,86 +660,15 @@
             </tbody>
           </table>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ==================== Ablation Study ==================== -->
-  <section class="section hero is-light" id="ablation">
-    <div class="container is-max-desktop">
-      <div class="has-text-centered">
-        <h2 class="title is-3">Ablation Study</h2>
-      </div>
-
-      <!-- Ablation study description -->
-      <div class="content has-text-justified">
-        <p>
-          To verify the contribution of each component, we construct two ablation variants:
-        </p>
-        <ul>
-          <li><strong>w/o Gated Fusion</strong>: Removes the semantic-guided tactile gating and injects tactile observation directly into the VLM as early-fusion input.</li>
-          <li><strong>w/o Fast Reflex</strong>: Removes the fast reflex pathway and retains only the slow semantic pathway.</li>
-        </ul>
-      </div>
-
-      <!-- Ablation study table -->
-      <div class="content">
-        <div class="table-container">
-          <table class="table is-bordered is-striped is-hoverable is-fullwidth">
-            <thead>
-              <tr>
-                <th>Variant</th>
-                <th>Power Plug</th>
-                <th>USB Connector</th>
-                <th>Test Tube</th>
-                <th>Average</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>w/o Gated Fusion</td>
-                <td>70%</td>
-                <td>70%</td>
-                <td>75%</td>
-                <td>71.7%</td>
-              </tr>
-              <tr>
-                <td>w/o Fast Reflex</td>
-                <td>85%</td>
-                <td>65%</td>
-                <td>80%</td>
-                <td>76.7%</td>
-              </tr>
-              <tr style="background-color: #eef3ff; font-weight: 700;">
-                <td>DT-TacVLA (Full)</td>
-                <td>100%</td>
-                <td>80%</td>
-                <td>95%</td>
-                <td>91.7%</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="content has-text-justified" style="margin-top: 1rem;">
+          <p>
+            Diffusion Policy achieves only 36.7% average success because it relies on visual observations and cannot obtain local contact feedback during insertion or placement. The VLA baselines &pi;<sub>0.5</sub> and SmolVLA benefit from vision-language pretraining, but they still fail when the contact state is hard to observe externally.
+          </p>
+          <p>
+            DT-TacVLA achieves the highest success rate on all three tasks. The slow semantic pathway uses tactile image history to identify contact phases and in-hand pose changes, while the fast reflex pathway modulates action generation from the current marker displacements to correct contact drift, insertion jamming, and unstable grasping.
+          </p>
         </div>
       </div>
-
-      <!-- Ablation analysis -->
-      <div class="content has-text-justified">
-        <p>
-          <strong>w/o Gated Fusion</strong> achieves only 71.7% average success rate (20.0pp lower), indicating that directly injecting tactile observation lacks adaptive regulation with respect to the task phase and proprioceptive state, easily introducing redundant features during free-space motion.
-        </p>
-        <p>
-          <strong>w/o Fast Reflex</strong> achieves 76.7% (15.0pp lower), showing that although the slow semantic pathway provides an effective task&ndash;contact context, removing the fast reflex pathway leaves the policy unable to quickly respond to the latest shear-field variations and correct contact drift.
-        </p>
-      </div>
-
-      <!-- Fast-slow timescale analysis figure -->
-      <div class="has-text-centered" style="margin-top: 2rem;">
-        <h3 class="title is-4">Fast&ndash;Slow Timescale Analysis</h3>
-      </div>
-      <img src="assets/images/R_bar_01.png" alt="Success rates of different R values" class="section-image" style="max-width: 75%;">
-      <p class="teaser-caption has-text-justified">
-        <strong>Impact of fast reflex update rate R.</strong> The success rate increases as R grows and peaks at R=3. Power plug and USB connector insertion involve tight-tolerance strokes that require multiple fast reflexes to suppress accumulated contact drift, while test-tube placement is less sensitive to the reflex rate.
-      </p>
     </div>
   </section>
 
@@ -741,10 +685,10 @@
           This paper proposes <strong>DT-TacVLA</strong>, a dual-timescale tactile-enhanced Vision&ndash;Language&ndash;Action framework tailored to contact-rich manipulation. Compared with VLA methods that are primarily vision-driven or introduce tactile sensing at a single rate, DT-TacVLA models the task&ndash;contact context through the slow semantic pathway and applies instantaneous modulation to the action chunk via the fast reflex pathway using marker displacements, thereby capturing fine contact interactions more effectively.
         </p>
         <p>
-          Real-robot experiments show that DT-TacVLA outperforms vision-only VLA baselines and its ablation variants on power plug insertion, USB connector insertion, and test-tube placement, validating the effectiveness of dual-timescale tactile fusion for high-precision contact manipulation.
+          Real-robot experiments show that DT-TacVLA outperforms vision-only VLA baselines on power plug insertion, USB connector insertion, and test tube placement, validating the effectiveness of dual-timescale tactile fusion for high-precision contact manipulation.
         </p>
         <p>
-          <strong>Future work</strong> will further introduce reinforcement learning to refine the contact policy through interactive trial-and-error on top of the dual-timescale tactile feedback, and to improve the model's robustness under complex contact perturbations, bimanual coordination, and deformable-object manipulation.
+          Although DT-TacVLA demonstrates strong contact-adaptation capability, the policy still relies primarily on offline demonstration data and cannot fully cover continuous error recovery and long-tailed contact failure states. Future work will introduce reinforcement learning to refine the contact policy through interactive trial-and-error on top of dual-timescale tactile feedback, and will improve robustness under complex contact perturbations, bimanual coordination, and deformable-object manipulation.
         </p>
       </div>
     </div>
